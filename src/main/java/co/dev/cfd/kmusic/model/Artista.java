@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Artista {
+public class Artista {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

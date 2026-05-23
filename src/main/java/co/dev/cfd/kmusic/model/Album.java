@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -41,5 +42,6 @@ public class Album {
         cascade=CascadeType.ALL,
         orphanRemoval=true
     )
+    @ToString.Exclude
     private List<Cancion> canciones = new ArrayList<>();
 }

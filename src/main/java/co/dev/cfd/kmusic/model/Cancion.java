@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Cancion {
+public class Cancion {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
