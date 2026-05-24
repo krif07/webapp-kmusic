@@ -22,7 +22,7 @@ public class ArtistaService {
      * @return el artista encontrado
      * @throws EntityNotFoundException si no existe un artista con ese id
      */
-    public Artista obteneArtistaPorId(Long id) {
+    public Artista obtenerArtistaPorId(Long id) {
         return artistaRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(String.format("Artista con id %d no encontrado", id)));
