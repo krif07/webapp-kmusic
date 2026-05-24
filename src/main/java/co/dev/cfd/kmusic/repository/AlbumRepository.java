@@ -13,6 +13,8 @@ public interface AlbumRepository extends JpaRepository<Album, Long>{
 
     Optional<Album> findByGenero(String genero);
 
+    Optional<Album> findByTitulo(String titulo);
+
     void deleteByArtista(Artista artista);
 
     void deleteByGenero(String genero);
