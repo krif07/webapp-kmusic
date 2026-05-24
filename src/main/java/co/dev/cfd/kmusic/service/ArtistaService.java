@@ -25,7 +25,7 @@ public class ArtistaService {
     public Artista obteneArtistaPorId(Long id) {
         return artistaRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Artista con id {id} no encontrado", id)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Artista con id %d no encontrado", id)));
     }
 
     /**

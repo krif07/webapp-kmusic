@@ -32,7 +32,7 @@ public class AlbumService {
     public Album obtenerAlbumPorId(Long id) {
         return albumRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Album con id {id} no encontrado", id)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Album con id %d no encontrado", id)));
     }
 
     /**
@@ -53,7 +53,7 @@ public class AlbumService {
     public void eliminarAlbum(Long id) {
         Album album = albumRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("No se puede eliminar el album con {id}", id)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se puede eliminar el album con %d", id)));
         albumRepository.delete(album);
     }
 
@@ -71,7 +71,7 @@ public class AlbumService {
     public Album guardarAlbum(Album album, Long idArtista, List<Long> idCanciones) {
         Artista artista = artistaRepository
             .findById(idArtista)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Artista no encontrado con id {id}", idArtista)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Artista no encontrado con id %d", idArtista)));
         album.setArtista(artista);
 
         if(idCanciones != null && !idCanciones.isEmpty()){
@@ -100,11 +100,11 @@ public class AlbumService {
     public void actualizarAlbum(Long idAlbum, Album albumActualizado, Long idArtista, List<Long> idCanciones) {
         Album albumExistente = albumRepository
             .findById(idAlbum)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Album con id {id} no existe", idAlbum)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Album con id %d no existe", idAlbum)));
         
         Artista artista = artistaRepository
             .findById(idArtista)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("El artista con id {id}, no se encontró", idArtista)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("El artista con id %d, no se encontró", idArtista)));
 
         albumExistente.setTitulo(albumActualizado.getTitulo());
         albumExistente.setGenero(albumActualizado.getGenero());

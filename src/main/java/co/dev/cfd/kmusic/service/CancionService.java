@@ -30,7 +30,7 @@ public class CancionService {
     public Cancion obtenerCancionPorId(Long id) {
         return cancionRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró la canción con el id: {id}", id)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró la canción con el id: %d", id)));
     }
 
     /**
@@ -54,7 +54,7 @@ public class CancionService {
     public Cancion guardarCancion(Cancion cancion, Long albumId) {
         Album album = albumRepository
             .findById(albumId)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró el album con id: {id}", albumId)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró el album con id: %d", albumId)));
         
         cancion.setAlbum(album);
         return cancionRepository.save(cancion);
@@ -71,7 +71,7 @@ public class CancionService {
     public void eliminarCancion(Long id) {
         Cancion cancion = cancionRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró la canción a eliminar con id: {id}", id)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró la canción a eliminar con id: %d", id)));
         cancionRepository.delete(cancion);
     }
 }
