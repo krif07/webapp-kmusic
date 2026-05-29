@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,10 @@ public class Artista {
     @Column(nullable=false)
     private Long id;
 
+    @NotBlank
     private String nacionalidad;
+
+    
     private LocalDate fechaNacimiento;
     private String email;
 

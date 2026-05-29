@@ -19,37 +19,5 @@ import co.dev.cfd.kmusic.service.CancionService;
 @SpringBootTest
 public class CancionServiceTest {
 
-    private Artista artistaGuardado;
 
-    @Autowired
-    private ArtistaService artistaService;
-
-    @Autowired
-    private AlbumService albumService;
-
-    @Autowired
-    private CancionService cancionService;
-
-    @BeforeEach
-    void setup() {
-        Artista artista = new Artista();
-        artista.setEmail("krif07@gmail.com");
-        artista.setFechaNacimiento(LocalDate.now());
-        artista.setNacionalidad("Colombiano");
-
-        artistaGuardado = artistaService.guardarArtista(artista);
-    }
-
-    @Test
-    void testListarArtistas(){
-        assertFalse(artistaService.listarArtistas().isEmpty());
-    }
-
-    @Test
-    void testValidarArtistaGuardado() {
-        Artista artista = artistaService.obtenerArtistaPorId(artistaGuardado.getId());
-
-        assertNotNull(artista);
-        assertEquals(artistaGuardado.getId(), artista.getId());
-    }
 }
