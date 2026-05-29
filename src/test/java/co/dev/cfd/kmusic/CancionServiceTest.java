@@ -2,10 +2,13 @@ package co.dev.cfd.kmusic;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +19,7 @@ import co.dev.cfd.kmusic.model.*;
 import co.dev.cfd.kmusic.repository.AlbumRepository;
 import co.dev.cfd.kmusic.repository.ArtistaRepository;
 import co.dev.cfd.kmusic.service.CancionService;
+import jakarta.persistence.EntityNotFoundException;
 import net.datafaker.Faker;
 
 @SpringBootTest
@@ -69,7 +73,41 @@ public class CancionServiceTest {
 
     @Test
     void testListarCanciones() {
-
+        List<Cancion> canciones = cancionService.listarCanciones();
+        assertFalse(canciones.isEmpty());
     }
 
+    @Test
+    void testObtenerCancionPorId() {
+        Cancion cancion = cancionService.obtenerCancionPorId(cancionGuardada.getId());
+        assertNotNull(cancion.getId());
+        assertEquals(cancionGuardada.getId(), cancion.getId());
+        assertEquals(cancionGuardada.getNombre(), cancion.getNombre());
+    }
+
+    @Test
+    void testObtenerCancionPorIdInexistente() {
+        Long idCancionInexistente = Long.MAX_VALUE;
+        
+        EntityNotFoundException ex = assertThrows(
+            EntityNotFoundException.class,
+            () -> cancionService.obtenerCancionPorId(idCancionInexistente));
+        
+        assertNotNull(ex);
+        assertTrue(ex.getMessage().contains(String.format("No se encontró la canción con el id: %d", idCancionInexistente)));
+    }
+
+    @Test
+    void testEliminarCancion() {
+        Long id = cancionGuardada.getId();
+
+        assertNotNull(cancionService.obtenerCancionPorId(id));
+        cancionService.eliminarCancion(id);
+        EntityNotFoundException ex = assertThrows(
+            EntityNotFoundException.class,
+            () -> cancionService.obtenerCancionPorId(id));
+        
+        assertNotNull(ex);
+        assertEquals(ex.getMessage(), String.format("No se encontró la canción con el id: %d", id));
+    }
 }
