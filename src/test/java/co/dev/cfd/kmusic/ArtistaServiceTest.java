@@ -17,6 +17,8 @@ import co.dev.cfd.kmusic.model.Artista;
 import co.dev.cfd.kmusic.service.ArtistaService;
 import jakarta.persistence.EntityNotFoundException;
 
+import net.datafaker.Faker;
+
 @SpringBootTest
 public class ArtistaServiceTest {
 
@@ -28,10 +30,12 @@ public class ArtistaServiceTest {
 
     @BeforeEach
     void setup() {
+        Faker faker = new Faker();
+        
         Artista artista = new Artista();
-        artista.setEmail("krif07@gmail.com");
-        artista.setFechaNacimiento(LocalDate.now());
-        artista.setNacionalidad("Colombiano");
+        artista.setEmail(faker.internet().emailAddress(faker.name().fullName().toLowerCase()));
+        artista.setFechaNacimiento(LocalDate.now().minusYears(faker.number().numberBetween(18, 60)));
+        artista.setNacionalidad(faker.country().name().toLowerCase());
 
         artistaGuardado = artistaService.guardarArtista(artista);
     }
