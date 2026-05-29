@@ -21,7 +21,9 @@ import net.datafaker.Faker;
 @SpringBootTest
 public class CancionServiceTest {
       
+    @Autowired
     private ArtistaRepository artistaRepository;
+    @Autowired
     private AlbumRepository albumRepository;
 
     @Autowired
@@ -35,23 +37,22 @@ public class CancionServiceTest {
     void setup() {
         Faker faker = new Faker();
 
-        artistaGuardado = Artista.builder()
+        artistaGuardado = artistaRepository.save(Artista.builder()
             .nacionalidad(faker.country().name().toLowerCase())    
             .email(faker.internet().emailAddress())
             .fechaNacimiento(LocalDate.now().minusYears(faker.number().numberBetween(18, 60)))
-            .build();
+            .build());
 
-        albumGuardado = Album.builder()
+        albumGuardado = albumRepository.save(Album.builder()
             .titulo(faker.book().title())
             .genero(faker.music().genre().toLowerCase())
             .fechaEstreno(LocalDate.now().minusYears(faker.number().numberBetween(1, 200)))
             .artista(artistaGuardado)
-            .build();
+            .build());
 
         Cancion cancion = Cancion.builder()
             .nombre(faker.music().chord())
             .duracion(BigDecimal.valueOf(faker.number().numberBetween(1, 1000)))
-            .album(albumGuardado)
             .build();
 
         cancionGuardada = cancionService.guardarCancion(cancion, albumGuardado.getId());
