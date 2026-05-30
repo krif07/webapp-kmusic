@@ -12,7 +12,7 @@
 </head>
 <body class="container mt-4">
     <h1>Nuevo &Aacute;lbum</h1>
-    <form th:action="@{/album/guardarAlbum}" th:object="${album}" method="post" class="w-75">
+    <form th:action="@{/album/guardar}" th:object="${album}" method="post" class="w-75">
         <div class="mb-3">
             <label for="titulo" class="form-label">T&iacute;tulo</label>
             <input type="text" id="titulo" th:field="*{titulo}" class="form-control" placeholder="T&iacute;tulo del &aacute;lbum">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="/album/albumes" class="btn btn-secondary">Cancelar</a>
+        <a href="/album/listar" class="btn btn-secondary">Cancelar</a>
     </form>
     <script>
         function moverDerecha() {

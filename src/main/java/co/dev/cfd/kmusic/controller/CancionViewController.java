@@ -23,23 +23,24 @@ public class CancionViewController {
     private final CancionService cancionService;
     private final AlbumService albumService;
 
-    @GetMapping(value="/canciones")
+    @GetMapping(value="/listar")
     public String listar(Model model) {
         model.addAttribute("canciones", cancionService.listarCanciones());
-        return "listaCanciones";
+        return "listarCanciones";
     }
 
-    @GetMapping("/agregarCancion")
+    @GetMapping("/agregar")
     public String mostrarFormularioNuevaCancion(Model model) {
         model.addAttribute("cancion", new Cancion());
         model.addAttribute("albumnes", albumService.obtenerAlbumes());
 
         return "agregarCancionForm";
     }
-@PostMapping("/guardarCancion")
-public String guardarCancion(@ModelAttribute Cancion cancion, @RequestParam Long albumId) {
-    cancionService.guardarCancion(cancion, albumId);
-    return "redirect:/cancion/canciones";
-}
+    
+    @PostMapping("/guardar")
+    public String guardarCancion(@ModelAttribute Cancion cancion, @RequestParam Long albumId) {
+        cancionService.guardarCancion(cancion, albumId);
+        return "redirect:/cancion/listar";
+    }
 
 }

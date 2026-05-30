@@ -7,7 +7,7 @@
 </head>
 <body class="container mt-4">
     <h1>Nueva Canci&oacute;n</h1>
-    <form th:action="@{/cancion/guardarCancion}" th:object="${cancion}" method="post" class="w-50">
+    <form th:action="@{/cancion/guardar}" th:object="${cancion}" method="post" class="w-50">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="Nombre de la canci&oacute;n">
@@ -24,7 +24,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="/cancion/canciones" class="btn btn-secondary">Cancelar</a>
+        <a href="/cancion/listar" class="btn btn-secondary">Cancelar</a>
     </form>
 </body>
 </html>
