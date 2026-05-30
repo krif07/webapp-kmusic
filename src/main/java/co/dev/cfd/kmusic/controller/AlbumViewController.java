@@ -18,6 +18,8 @@ import lombok.AllArgsConstructor;
 
 
 
+
+
 @Controller
 @AllArgsConstructor
 @RequestMapping(value="/album")
@@ -49,11 +51,27 @@ public class AlbumViewController {
         return "redirect:/album/listar";
     }
 
+    @GetMapping("/actualizar/{id}")
+    public String mostrarFormActualizarAlbum(@PathVariable Long id, Model model) {
+        model.addAttribute("album", albumService.obtenerAlbumPorId(id));
+        model.addAttribute("canciones", cancionService.listarCanciones());
+        
+        return "actualizarAlbumForm";
+    }
+
+    @PostMapping("/actualizar/{idAlbum}")
+    public String actualizarAlbum(@PathVariable Long idAlbum, 
+                                @ModelAttribute Album albumActualizado, 
+                                @RequestParam Long idArtista,
+                                @RequestParam(required=false) List<Long> idCanciones) {
+        
+        albumService.actualizarAlbum(idAlbum, albumActualizado, idArtista, idCanciones);
+        return "redirect:/album/listar";
+    }
+    
     @GetMapping("/eliminar/{id}")
     public String eliminarAlbum(@PathVariable Long id) {
         albumService.eliminarAlbum(id);
         return "redirect:/album/listar";
     }
-    
-    
 }
