@@ -17,7 +17,7 @@ public class ArtistaViewController {
 
     @GetMapping("/artistas")
     public String listar(Model model) {
-        model.addAttribute("artista", artistaService.listarArtistas());
+        model.addAttribute("artistas", artistaService.listarArtistas());
         return "listaArtistas";
     }
 }
