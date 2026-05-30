@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <title>Agregar &Aacute;lbum</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .dual-listbox { display: flex; gap: 1rem; align-items: center; }
+        .dual-listbox select { width: 100%; min-height: 200px; }
+        .dual-listbox-buttons { display: flex; flex-direction: column; gap: 0.5rem; }
+    </style>
 </head>
 <body class="container mt-4">
     <h1>Nuevo &Aacute;lbum</h1>
-    <form th:action="@{/album/guardarAlbum}" th:object="${album}" method="post" class="w-50">
+    <form th:action="@{/album/guardarAlbum}" th:object="${album}" method="post" class="w-75">
         <div class="mb-3">
             <label for="titulo" class="form-label">T&iacute;tulo</label>
             <input type="text" id="titulo" th:field="*{titulo}" class="form-control" placeholder="T&iacute;tulo del &aacute;lbum">
@@ -27,8 +32,44 @@
                 <option th:each="art : ${artistas}" th:value="${art.id}" th:text="${art.email}"></option>
             </select>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Canciones</label>
+            <div class="dual-listbox row">
+                <div class="col">
+                    <label for="cancionesDisponibles" class="form-label small">Disponibles</label>
+                    <select id="cancionesDisponibles" class="form-select" multiple>
+                        <option th:each="c : ${canciones}" th:value="${c.id}" th:text="${c.nombre}"></option>
+                    </select>
+                </div>
+                <div class="dual-listbox-buttons col-auto">
+                    <button type="button" class="btn btn-primary" onclick="moverDerecha()">&rarr;</button>
+                    <button type="button" class="btn btn-primary" onclick="moverIzquierda()">&larr;</button>
+                </div>
+                <div class="col">
+                    <label for="idCanciones" class="form-label small">Seleccionadas</label>
+                    <select id="idCanciones" name="idCanciones" class="form-select" multiple></select>
+                </div>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="/album/albumes" class="btn btn-secondary">Cancelar</a>
     </form>
+    <script>
+        function moverDerecha() {
+            const disponibles = document.getElementById('cancionesDisponibles');
+            const seleccionadas = document.getElementById('idCanciones');
+            Array.from(disponibles.selectedOptions).forEach(opt => {
+                seleccionadas.appendChild(opt);
+            });
+            Array.from(seleccionadas.options).forEach(opt => opt.selected = true);
+        }
+        function moverIzquierda() {
+            const disponibles = document.getElementById('cancionesDisponibles');
+            const seleccionadas = document.getElementById('idCanciones');
+            Array.from(seleccionadas.selectedOptions).forEach(opt => {
+                disponibles.appendChild(opt);
+            });
+        }
+    </script>
 </body>
 </html>

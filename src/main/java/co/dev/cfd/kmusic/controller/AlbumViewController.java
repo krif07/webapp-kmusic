@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import co.dev.cfd.kmusic.model.Album;
 import co.dev.cfd.kmusic.service.AlbumService;
 import co.dev.cfd.kmusic.service.ArtistaService;
+import co.dev.cfd.kmusic.service.CancionService;
 import lombok.AllArgsConstructor;
 
 
@@ -24,6 +25,7 @@ public class AlbumViewController {
  
     private final AlbumService albumService;
     private final ArtistaService artistaService;
+    private final CancionService cancionService;
 
     @GetMapping("/albumes")
     public String listar(Model model) {
@@ -36,6 +38,7 @@ public class AlbumViewController {
     public String mostrarFormularioNuevoAlbum(Model model) {
         model.addAttribute("album", new Album());
         model.addAttribute("artistas", artistaService.listarArtistas());
+        model.addAttribute("canciones", cancionService.listarCanciones());
 
         return "agregarAlbumForm";
     }
