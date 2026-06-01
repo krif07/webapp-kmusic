@@ -61,6 +61,28 @@ public class CancionService {
     }
 
     /**
+     * Actualizar la canción identificada por el id dado.
+     *
+     * @param id identificador de la canción a eliminar
+     * @param cancionActualizada
+     * @albumId
+     * @throws EntityNotFoundException si no existe una canción con ese id
+     */
+    @Transactional
+    public Cancion actualizarCancion(Long id, Cancion cancionActualizada, Long albumId) {
+        Cancion cancion = cancionRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró la canción con id: %d", id)));
+        Album album = albumRepository
+            .findById(albumId)
+            .orElseThrow(() -> new EntityNotFoundException(String.format("No se encontró el album con id: %d", albumId)));
+        cancion.setNombre(cancionActualizada.getNombre());
+        cancion.setDuracion(cancionActualizada.getDuracion());
+        cancion.setAlbum(album);
+        return cancionRepository.save(cancion);
+    }
+
+    /**
      * Elimina la canción identificada por el id dado.
      *
      * @param id identificador de la canción a eliminar
