@@ -2,58 +2,105 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar &Aacute;lbum</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Álbum — KMusic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .dual-listbox { display: flex; gap: 1rem; align-items: center; }
-        .dual-listbox select { width: 100%; min-height: 200px; }
-        .dual-listbox-buttons { display: flex; flex-direction: column; gap: 0.5rem; }
+        .bg-glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .sidebar-active { background: rgba(168,85,247,0.25); }
+        .sidebar-link { color: #9ca3af; transition: all 0.2s; }
+        .sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
     </style>
 </head>
-<body class="container mt-4">
-    <h1>Nuevo &Aacute;lbum</h1>
-    <form th:action="@{/album/guardar}" th:object="${album}" method="post" class="w-75">
-        <div class="mb-3">
-            <label for="titulo" class="form-label">T&iacute;tulo</label>
-            <input type="text" id="titulo" th:field="*{titulo}" class="form-control" placeholder="T&iacute;tulo del &aacute;lbum">
-        </div>
-        <div class="mb-3">
-            <label for="genero" class="form-label">G&eacute;nero</label>
-            <input type="text" id="genero" th:field="*{genero}" class="form-control" placeholder="G&eacute;nero">
-        </div>
-        <div class="mb-3">
-            <label for="fechaEstreno" class="form-label">Fecha de Estreno</label>
-            <input type="date" id="fechaEstreno" th:field="*{fechaEstreno}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="artista" class="form-label">Artista</label>
-            <select id="artista" name="idArtista" class="form-select">
-                <option value="">Seleccione un artista</option>
-                <option th:each="art : ${artistas}" th:value="${art.id}" th:text="${art.email}"></option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Canciones</label>
-            <div class="dual-listbox row">
-                <div class="col">
-                    <label for="cancionesDisponibles" class="form-label small">Disponibles</label>
-                    <select id="cancionesDisponibles" class="form-select" multiple>
-                        <option th:each="c : ${canciones}" th:value="${c.id}" th:text="${c.nombre}"></option>
-                    </select>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-vh-100 text-white">
+    <div class="d-flex flex-column flex-md-row">
+        <aside class="w-100 w-md-64 bg-black bg-opacity-30 p-4 border-bottom border-md-bottom-0 border-md-end border-white border-opacity-10" style="flex: 0 0 auto; width: 16rem;">
+            <h1 class="fs-4 fw-bold mb-4" style="background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">KMusic</h1>
+            <nav class="d-flex flex-md-column gap-2">
+                <a href="/cancion/listar" class="sidebar-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-decoration-none">
+                    <svg class="flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                    Canciones
+                </a>
+                <a href="/album/listar" class="sidebar-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 sidebar-active text-decoration-none">
+                    <svg class="flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    Álbumes
+                </a>
+                <a href="/artista/listar" class="sidebar-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-decoration-none">
+                    <svg class="flex-shrink-0" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Artistas
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-grow-1 p-4 p-md-5">
+            <div class="container-fluid p-0" style="max-width: 900px;">
+                <div class="mb-4">
+                    <a href="/album/listar" class="btn btn-sm btn-link text-secondary text-decoration-none p-0 d-inline-flex align-items-center gap-1">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        Volver a álbumes
+                    </a>
                 </div>
-                <div class="dual-listbox-buttons col-auto">
-                    <button type="button" class="btn btn-primary" onclick="moverDerecha()">&rarr;</button>
-                    <button type="button" class="btn btn-primary" onclick="moverIzquierda()">&larr;</button>
-                </div>
-                <div class="col">
-                    <label for="idCanciones" class="form-label small">Seleccionadas</label>
-                    <select id="idCanciones" name="idCanciones" class="form-select" multiple></select>
+
+                <div class="bg-glass rounded-4 border border-white border-opacity-10 p-4 p-md-5">
+                    <h2 class="fs-2 fw-bold mb-4">Nuevo Álbum</h2>
+
+                    <form th:action="@{/album/guardar}" th:object="${album}" method="post">
+                        <div class="mb-4">
+                            <label for="titulo" class="form-label text-secondary small fw-medium">Título</label>
+                            <input type="text" id="titulo" th:field="*{titulo}" placeholder="Título del álbum" class="form-control form-control-lg bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important;">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="genero" class="form-label text-secondary small fw-medium">Género</label>
+                            <input type="text" id="genero" th:field="*{genero}" placeholder="Género" class="form-control form-control-lg bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important;">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="fechaEstreno" class="form-label text-secondary small fw-medium">Fecha de Estreno</label>
+                            <input type="date" id="fechaEstreno" th:field="*{fechaEstreno}" class="form-control form-control-lg bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important; color-scheme: dark;">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="artista" class="form-label text-secondary small fw-medium">Artista</label>
+                            <select id="artista" name="idArtista" class="form-select form-select-lg bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important;">
+                                <option value="" class="bg-dark">Seleccione un artista</option>
+                                <option th:each="art : ${artistas}" th:value="${art.id}" th:text="${art.email}" class="bg-dark"></option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-secondary small fw-medium">Canciones</label>
+                            <div class="row g-3 align-items-stretch">
+                                <div class="col-12 col-md-5">
+                                    <label for="cancionesDisponibles" class="form-label text-xs text-secondary">Disponibles</label>
+                                    <select id="cancionesDisponibles" class="form-select bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important; min-height: 200px;" multiple>
+                                        <option th:each="c : ${canciones}" th:value="${c.id}" th:text="${c.nombre}" class="bg-dark"></option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-2 d-flex flex-row flex-md-column justify-content-center align-items-center gap-2 py-2">
+                                    <button type="button" onclick="moverDerecha()" class="btn btn-outline-primary px-3 fs-5" style="border-color: rgba(168,85,247,0.3); color: #c4b5fd;">&rarr;</button>
+                                    <button type="button" onclick="moverIzquierda()" class="btn btn-outline-primary px-3 fs-5" style="border-color: rgba(168,85,247,0.3); color: #c4b5fd;">&larr;</button>
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <label for="idCanciones" class="form-label text-xs text-secondary">Seleccionadas</label>
+                                    <select id="idCanciones" name="idCanciones" class="form-select bg-black bg-opacity-25 text-white border-white border-opacity-10" style="background: rgba(0,0,0,0.25) !important; min-height: 200px;" multiple></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-lg" style="background: linear-gradient(135deg, #a78bfa, #f472b6); border: none;">
+                                Guardar
+                            </button>
+                            <a href="/album/listar" class="btn btn-link text-secondary text-decoration-none px-3">Cancelar</a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="/album/listar" class="btn btn-secondary">Cancelar</a>
-    </form>
+        </main>
+    </div>
+
     <script>
         function moverDerecha() {
             const disponibles = document.getElementById('cancionesDisponibles');
